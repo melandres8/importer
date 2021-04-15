@@ -1,0 +1,46 @@
+<% if user_signed_in? %>
+  <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger mb-2" %>
+<% end %>
+<%= link_to 'Imported Files', imported_files_path, class: "btn btn-outline-primary mb-3" %>
+<%= link_to 'Contacts', contacts_path, class: "btn btn-outline-primary mb-3" %>
+<%= link_to 'Fail Contacts', invalid_contacts_path, class: "btn btn-outline-primary mb-3" %>
+
+<h1 class="text-primary text-center mb-3">Import Contacts</h1>
+
+<%= form_tag import_imported_files_path, multipart: true, class: "mx-auto" do %>
+ <div class="row mb-5">
+    <div class="form-group col-sm">
+      <%= label_tag 'column 1'%>
+      <%= text_field_tag :name, '', :required => true %>
+    </div>
+
+    <div class="form-group col-sm">
+      <%= label_tag 'column 2'%>
+      <%= text_field_tag :birthdate, '', :required => true %>
+    </div>
+
+    <div class="form-group col-sm">
+      <%= label_tag 'column 3'%>
+      <%= text_field_tag :phone, '', :required => true %>
+    </div>
+
+    <div class="form-group col-sm">
+      <%= label_tag 'column 4'%>
+      <%= text_field_tag :address, '', :required => true %>
+    </div>
+
+    <div class="form-group col-sm">
+      <%= label_tag 'column 5'%>
+      <%= text_field_tag :credit_card, '', :required => true %>
+    </div>
+
+    <div class="form-group col-sm">
+      <%= label_tag 'column 6'%>
+      <%= text_field_tag :email, '', :required => true %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= file_field_tag :file, accept: 'text/csv', class: "btn btn-secondary", required: true %>
+  </div>
+  <%= submit_tag 'Import', class: "btn btn-outline-secondary" %>
+<% end %>

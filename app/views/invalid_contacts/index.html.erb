@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Imported Files', imported_files_path, class: "btn btn-outline-primary" %>
+<%= link_to "Contacts", contacts_path, class: "btn btn-secondary" %>
+
+<h1 class="text-primary text-center">Listing Fail Contacts</h1>
+
+<br>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Name </th>
+      <th scope="col">Birthdate </th>
+      <th scope="col">Phone </th>
+      <th scope="col">Address </th>
+      <th scope="col">Credit card </th>
+      <th scope="col">Franchise </th>
+      <th scope="col">Email </th>
+      <th scope="col">Error messages </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @invalid_contacts.each do |invalid| %>
+      <tr>
+        <td scope="row"><%= invalid.name %></td>
+        <td><%= invalid.birthdate %></td>
+        <td><%= invalid.phone %></td>
+        <td><%= invalid.address %></td>
+        <td><%= invalid.four_digits %></td>
+        <td><%= invalid.franchise %></td>
+        <td><%= invalid.email %></td>
+        <td><%= invalid.error_msg %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @invalid_contacts %>
+
+<%= link_to 'New Import', root_path, class: "btn btn-outline-primary" %>

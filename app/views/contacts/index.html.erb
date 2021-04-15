@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<% if user_signed_in? %>
+  <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+<% end %>
+<%= link_to 'Imported Files', imported_files_path, class: "btn btn-outline-primary" %>
+<%= link_to 'Fail Contacts', invalid_contacts_path, class: "btn btn-outline-primary" %>
+
+<h1 class="text-primary text-center">Listing Contacts</h1>
+
+<br>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Name </th>
+      <th scope="col">Birthdate </th>
+      <th scope="col">Phone </th>
+      <th scope="col">Address </th>
+      <th scope="col">Credit card </th>
+      <th scope="col">Franchise </th>
+      <th scope="col">Email </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contacts.each do |contact| %>
+      <tr>
+        <td scope="row"><%= contact.name %></td>
+        <td><%= contact.birthdate %></td>
+        <td><%= contact.phone %></td>
+        <td><%= contact.address %></td>
+        <td><%= contact.four_digits %></td>
+        <td><%= contact.franchise %></td>
+        <td><%= contact.email %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @contacts %>
