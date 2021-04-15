@@ -9,7 +9,6 @@
     <tr>
       <th>Filename</th>
       <th>State</th>
-      <th>User</th>
       <th colspan="3">Actions</th>
     </tr>
   </thead>
@@ -19,9 +18,9 @@
       <tr>
         <td><%= imported_file.filename %></td>
         <td><%= imported_file.state %></td>
-        <td><%= imported_file.user_id %></td>
         <td><%= button_to 'Destroy', imported_file, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+<%= will_paginate @contacts %>

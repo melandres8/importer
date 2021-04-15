@@ -2,7 +2,7 @@ class ImportedFilesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @imported_files = ImportedFile.all
+    @imported_files = current_user.imported_files.paginate(page: params[:page], per_page: 10)
   end
 
   def new
@@ -12,7 +12,7 @@ class ImportedFilesController < ApplicationController
   def import
     @import_files = current_user.imported_files.build(filename: params[:file].original_filename,
                                                       state: '')
-    @import_files.import(params[:file], current_user) if @import_files.save
+    @import_files.import(params) if @import_files.save
     redirect_to contacts_path, notice: 'Uploaded'
   end
 
