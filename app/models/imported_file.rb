@@ -30,12 +30,12 @@ class ImportedFile < ApplicationRecord
       if contact.save && may_processing_file?
         processing_file!
       else
-        failed_contact!(file, user, contact, contacts_hash)
+        failed_contact!(user, contact, contacts_hash)
       end
     end
   end
 
-  def failed_contact!(file, user, contact, contacts_hash)
+  def failed_contact!(user, contact, contacts_hash)
     errors_msg = []
     errors_msg = contact.errors.full_messages.join(', ')
     invalid_contact = InvalidContact.new(name: contacts_hash['name'], birthdate: contacts_hash['birthdate'],
