@@ -18,6 +18,6 @@ class ImportedFilesController < ApplicationController
 
   def destroy
     @imported_file = ImportedFile.find(params[:id])
-    redirect_to imported_files_path, notice: 'Successfully deleted' if @imported_file.destroy
+    redirect_to imported_files_path if @imported_file.destroy
   end
 end

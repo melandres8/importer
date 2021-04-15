@@ -5,8 +5,8 @@ class ImportedFile < ApplicationRecord
   include AASM
 
   aasm column: 'state' do
-    state :waiting, initial: true
-    state :processing, :rejected, :finished
+    state :processing, initial: true
+    state :waiting, :rejected, :finished
 
     event :processing_file do
       transitions from: %i[processing rejected], to: :finished
@@ -27,16 +27,23 @@ class ImportedFile < ApplicationRecord
                             credit_card: contacts_hash['credit_card'], franchise: contacts_hash['credit_card'],
                             four_digits: contacts_hash['credit_card'], email: contacts_hash['email'],
                             user_id: user.id)
-      unless contact.save
-        errors_msg = []
-        errors_msg = contact.errors.full_messages.join(', ')
-        invalid_contact = InvalidContact.new(name: contacts_hash['name'], birthdate: contacts_hash['birthdate'],
-                                             phone: contacts_hash['phone'], address: contacts_hash['address'],
-                                             credit_card: contacts_hash['credit_card'], franchise: contacts_hash['credit_card'],
-                                             four_digits: contacts_hash['credit_card'], email: contacts_hash['email'],
-                                             user_id: user.id, error_msg: errors_msg)
-        rejected_file! if invalid_contact.save! && may_rejected_file?
+      if contact.save && may_processing_file?
+        processing_file!
+      else
+        failed_contact!(file, user, contact, contacts_hash)
       end
     end
+  end
+
+  def failed_contact!(file, user, contact, contacts_hash)
+    errors_msg = []
+    errors_msg = contact.errors.full_messages.join(', ')
+    invalid_contact = InvalidContact.new(name: contacts_hash['name'], birthdate: contacts_hash['birthdate'],
+                                         phone: contacts_hash['phone'], address: contacts_hash['address'],
+                                         credit_card: contacts_hash['credit_card'], franchise: contacts_hash['credit_card'],
+                                         four_digits: contacts_hash['credit_card'], email: contacts_hash['email'],
+                                         user_id: user.id, error_msg: errors_msg)
+    invalid_contact.save
+    rejected_file! if may_rejected_file?
   end
 end
