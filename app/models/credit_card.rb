@@ -11,7 +11,7 @@ class CreditCard
   end
 
   def last_digits
-    @credit_card.to_s
+    @credit_card.last(4).to_s
   end
 
   def credit_card_encryptation
